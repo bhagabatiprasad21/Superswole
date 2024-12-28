@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import SectionWrapper from "./SectionWrapper";
 import { WORKOUTS, SCHEMES } from "../utils/data";
 import { useState } from "react";
+import Button from "./Button";
 
-// eslint-disable-next-line react/prop-types
 const Header = ({ index, title, description }) => {
   return (
     <div className="flex flex-col gap-4 pt-16">
@@ -17,11 +18,16 @@ const Header = ({ index, title, description }) => {
   );
 };
 
-const Generator = () => {
+const Generator = ({
+  poison,
+  setPoison,
+  muscles,
+  setMuscles,
+  goal,
+  setGoal,
+  updateWorkout,
+}) => {
   const [showModal, setShowModal] = useState(false);
-  const [poison, setPoison] = useState("individual");
-  const [muscles, setMuscles] = useState([]);
-  const [goal, setGoal] = useState("strength_power");
 
   const toggleModal = () => {
     setShowModal((prev) => !prev);
@@ -31,12 +37,12 @@ const Generator = () => {
       setMuscles(muscles.filter((val) => val !== muscleGroup));
       return;
     }
-    if (muscles.length > 3) {
+    if (muscles.length > 2) {
       return;
     }
 
     if (poison !== "individual") {
-      setMuscles(muscleGroup);
+      setMuscles([muscleGroup]);
       setShowModal(false);
       return;
     }
@@ -48,6 +54,7 @@ const Generator = () => {
   };
   return (
     <SectionWrapper
+      id={"generate"}
       header={"Generate your workout"}
       title={["it's", "huge", "o'clock"]}
     >
@@ -61,6 +68,7 @@ const Generator = () => {
           return (
             <button
               onClick={() => {
+                setMuscles([]);
                 setPoison(type);
               }}
               className={
@@ -84,7 +92,9 @@ const Generator = () => {
           className="flex justify-between items-center p-3"
           onClick={toggleModal}
         >
-          <p className="mx-auto">Select muscle groups</p>
+          <p className="mx-auto capitalize">
+            {muscles.length == 0 ? "Select muscle groups" : muscles.join(" ")}
+          </p>
           <i className="fa-solid fa-caret-down"></i>
         </button>
         {showModal && (
@@ -116,7 +126,7 @@ const Generator = () => {
         title={"Become Unstoppable"}
         description={"Select your ultimate objective."}
       />
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         {Object.keys(SCHEMES).map((scheme, schemeIndex) => {
           return (
             <button
@@ -134,6 +144,7 @@ const Generator = () => {
           );
         })}
       </div>
+      <Button func={updateWorkout} text={"Formulate"} />
     </SectionWrapper>
   );
 };

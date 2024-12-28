@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 const Hero = () => {
   return (
     <div className="min-h-screen flex flex-col gap-10 items-center justify-center p-4 text-center max-w-[700px] w-full mx-auto">
@@ -16,9 +18,12 @@ const Hero = () => {
         <span className="text-blue-400 font-medium">mass montrosity</span>,
         afflicted with severe body dismorphia, unable to fit through doors.
       </p>
-      <button className="px-8 py-4 rounded-md border-blue-400 border-[2px] border-solid bg-slate-950 blueShadow duration-200">
-        <p>Accept & Begin</p>
-      </button>
+      <Button
+        func={() => {
+          window.location.href = "#generate";
+        }}
+        text={"Accept & Begin"}
+      />
     </div>
   );
 };
